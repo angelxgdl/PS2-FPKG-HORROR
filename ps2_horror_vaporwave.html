@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS2 HORROR .::. VAPORWAVE ARCHIVE</title>
+    
+    <!-- Cargando Tailwind CSS para utilidad -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes Google: Orbitron para títulos y VT323 para ese toque retro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Colores principales Vaporwave */
+            --vw-bg: #0a0a0a;
+            --vw-pink: #ff00ff; /* Magenta/Rosa neón */
+            --vw-cyan: #00ffff; /* Cyan/Azul celeste neón */
+            --vw-dark-purple: #2b00ff;
+            --vw-grid: rgba(0, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: var(--vw-bg);
+            color: #e0e0e0;
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+            /* Efecto scanline muy sutil en el fondo */
+            background-image: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+        }
+
+        /* Tipografía y Textos Neón */
+        h1, h2, h3, .vapor-title {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .text-glow-pink {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--vw-pink),
+                0 0 40px var(--vw-pink),
+                0 0 80px var(--vw-pink);
+        }
+
+        .text-glow-cyan {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--vw-cyan),
+                0 0 40px var(--vw-cyan),
+                0 0 80px var(--vw-cyan);
+        }
+
+        /* Efecto Glitch para el título principal */
+        .glitch-wrapper {
+            position: relative;
+        }
+        
+        .glitch {
+            position: relative;
+            color: white;
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .glitch::before {
+            color: var(--vw-cyan);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            color: var(--vw-pink);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); }
+            40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, 2px); }
+            60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, -2px); }
+            80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, 1px); }
+            100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, -1px); }
+        }
+
+        /* Tarjetas de juego estilo VHS/Vaporwave */
+        .game-card {
+            background: rgba(10, 10, 20, 0.8);
+            border: 2px solid var(--vw-dark-purple);
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,0,255,0.1) 0%, rgba(0,255,255,0.1) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--vw-pink);
+            box-shadow: 0 0 20px var(--vw-pink), inset 0 0 10px var(--vw-pink);
+        }
+
+        .game-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Botón de descarga retro */
+        .btn-download {
+            background: transparent;
+            color: var(--vw-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid var(--vw-cyan);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-download:hover {
+            background: var(--vw-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--vw-cyan);
+        }
+        
+        .btn-download:active {
+            transform: scale(0.95);
+        }
+
+        /* Grid estilo TRON en el fondo inferior */
+        .cyber-grid {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 40vh;
+            background-image: 
+                linear-gradient(transparent 65%, var(--vw-pink) 100%),
+                linear-gradient(90deg, var(--vw-grid) 1px, transparent 1px),
+                linear-gradient(var(--vw-grid) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+            z-index: -1;
+            animation: grid-move 10s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 40px, 0 40px; }
+        }
+
+        /* Personalización del scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--vw-dark-purple); 
+            border: 1px solid var(--vw-cyan);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--vw-pink); 
+        }
+
+        /* Alertas personalizadas */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+        
+        .toast {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--vw-cyan);
+            color: var(--vw-pink);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 0 15px var(--vw-cyan);
+            font-family: 'Orbitron', sans-serif;
+            transform: translateX(120%);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative">
+
+    <!-- Grid de fondo animado -->
+    <div class="cyber-grid"></div>
+
+    <header class="py-10 text-center relative z-10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-xl md:text-2xl text-vw-cyan tracking-[0.5em] mb-2 font-bold" style="color: var(--vw-cyan);">ＰＬＡＹＳＴＡＴＩＯＮ ２</h2>
+            
+            <div class="glitch-wrapper mb-4">
+                <h1 class="glitch text-5xl md:text-7xl" data-text="TERROR ARCHIVE">TERROR ARCHIVE</h1>
+            </div>
+            
+            <p class="text-2xl md:text-3xl mt-4" style="color: var(--vw-pink); text-shadow: 2px 2px 0px #000;">
+                <i class="fas fa-skull text-vw-cyan"></i> Biblioteca exclusiva de horror de supervivencia <i class="fas fa-skull text-vw-cyan"></i>
+            </p>
+            <div class="h-1 w-full max-w-md mx-auto mt-6 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#00ffff]"></div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 pb-20 relative z-10">
+        
+        <!-- Controles/Filtros (Mockup estético) -->
+        <div class="flex justify-between items-center mb-10 border-b border-pink-500/30 pb-4">
+            <div class="text-xl">
+                <span style="color: var(--vw-cyan);">► SISTEMA:</span> <span class="animate-pulse">ONLINE</span>
+            </div>
+            <div class="flex gap-4">
+                <span class="text-gray-400 cursor-not-allowed hover:text-white transition">ORDENAR POR A-Z</span>
+                <span class="text-pink-500 font-bold border-b border-pink-500">MÁS TERRORÍFICOS</span>
+            </div>
+        </div>
+
+        <!-- Grid de Juegos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="games-container">
+            
+            <!-- Juego 1 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Silent Hill 2</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <!-- Placeholder visual en lugar de imagen para mantener estética y 1 archivo -->
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <!-- Efecto estática -->
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-smog text-6xl text-gray-500 group-hover:text-red-500 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">NTSC-U</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            James Sunderland recibe una carta de su esposa Mary, fallecida hace tres años, pidiéndole que vaya a su "lugar especial" en Silent Hill. Una obra maestra del terror psicológico que explora la culpa y el trauma.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 3.2 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Silent Hill 2', 'SH2_USA.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Juego 2 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Fatal Frame II</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-camera text-6xl text-gray-500 group-hover:text-cyan-500 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">PAL</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            Las gemelas Mio y Mayu se pierden en el bosque y encuentran la Aldea Perdida, un lugar maldecido atrapado en una noche eterna. Tu única arma: la Cámara Obscura para exorcizar espíritus.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 2.8 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Fatal Frame II: Crimson Butterfly', 'FF2_PAL.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Juego 3 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Resident Evil 4</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-biohazard text-6xl text-gray-500 group-hover:text-green-500 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">NTSC-U</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            Leon S. Kennedy viaja a una aldea rural en España para rescatar a la hija del presidente, solo para enfrentarse a horrores biológicos y aldeanos controlados por un culto. El juego que redefinió el género.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 4.1 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Resident Evil 4', 'RE4_USA.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Juego 4 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Rule of Rose</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fab fa-pagelines text-6xl text-gray-500 group-hover:text-pink-500 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">PAL</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            Inglaterra, 1930. Jennifer queda atrapada en un dirigible gobernado por huérfanas crueles conocidas como el Club de los Aristócratas del Lápiz Rojo. Un survival horror oscuro y psicológico.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 2.4 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Rule of Rose', 'RoR_PAL.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Juego 5 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Siren</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-eye text-6xl text-gray-500 group-hover:text-red-700 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">NTSC-J (Eng Patched)</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            Una aldea japonesa es envuelta por el mar rojo y sus habitantes se convierten en Shibito. Sobrevive usando la habilidad "Sightjacking" para ver a través de los ojos de los enemigos. Pura tensión.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 3.8 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Siren', 'Siren_ENG.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Juego 6 -->
+            <article class="game-card flex flex-col h-full">
+                <div class="game-content p-6 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-white tracking-wider vapor-title">Haunting Ground</h3>
+                        <span class="bg-red-900 text-red-200 text-xs px-2 py-1 rounded border border-red-500">M (Mature)</span>
+                    </div>
+                    
+                    <div class="w-full h-48 bg-black border border-gray-700 mb-4 flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                        <i class="fas fa-dog text-6xl text-gray-500 group-hover:text-yellow-500 transition-colors duration-500"></i>
+                        <div class="absolute bottom-2 right-2 text-xs text-gray-500 font-sans">NTSC-U</div>
+                    </div>
+
+                    <div class="flex-grow">
+                        <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                            Fiona despierta atrapada en un castillo gótico, perseguida sin descanso por sus dementes habitantes. Su única esperanza de supervivencia es Hewie, un pastor blanco que debe entrenar.
+                        </p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
+                        <div class="text-sm text-gray-400">
+                            <i class="fas fa-hdd mr-1"></i> 2.9 GB
+                        </div>
+                        <button class="btn-download" onclick="startDownload('Haunting Ground', 'HG_USA.pkg')">
+                            <i class="fas fa-download"></i> PKG
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="bg-black/80 border-t border-cyan-500/30 py-6 mt-auto relative z-20">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-500 mb-2 font-sans text-sm">
+                Esta es una página de archivo nostálgico. Ningún archivo real está alojado en este servidor.
+            </p>
+            <p style="color: var(--vw-pink);" class="text-xl">
+                <i class="fas fa-moon"></i> SWEET DREAMS <i class="fas fa-moon"></i>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Contenedor para Notificaciones -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        /**
+         * Simula la descarga de un archivo mostrando una notificación visual.
+         * En lugar de usar 'alert()', usamos un sistema de 'toast' personalizado
+         * que encaja con el diseño de la página.
+         * 
+         * @param {string} gameName - Nombre del juego
+         * @param {string} fileName - Nombre del archivo pkg falso
+         */
+        function startDownload(gameName, fileName) {
+            const container = document.getElementById('toast-container');
+            
+            // Crear el elemento de notificación (toast)
+            const toast = document.createElement('div');
+            toast.className = 'toast flex flex-col gap-2 min-w-[300px]';
+            
+            // Contenido HTML de la notificación
+            toast.innerHTML = `
+                <div class="flex justify-between items-center border-b border-pink-500/50 pb-1">
+                    <span class="font-bold text-cyan-400">INICIALIZANDO...</span>
+                    <button class="text-gray-500 hover:text-white" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div>
+                    <p class="text-white text-sm">Conectando al servidor FTP...</p>
+                    <p class="text-gray-300 mt-2 text-xs">Preparando: <span class="text-pink-400">${fileName}</span></p>
+                    <p class="text-gray-300 text-xs">Juego: ${gameName}</p>
+                </div>
+                <div class="w-full bg-gray-900 h-2 mt-2 rounded overflow-hidden border border-cyan-900">
+                    <div class="bg-cyan-400 h-full w-0 animate-[loading_2s_ease-in-out_forwards]"></div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Animación para mostrar (deslizar)
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Eliminar automáticamente después de 4 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if(container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300); // Espera a que termine la transición CSS
+            }, 4000);
+        }
+
+        // Estilos para la barra de carga (añadidos dinámicamente)
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes loading {
+                0% { width: 0%; }
+                50% { width: 70%; }
+                100% { width: 100%; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
