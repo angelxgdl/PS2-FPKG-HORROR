@@ -474,7 +474,7 @@
         <!-- Tamaño y Botón -->
         <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
           <div class="text-sm font-mono text-gray-400">
-            <i class="fas fa-hdd mr-1"></i> 3.2 GB
+            <i class="fas fa-hdd mr-1"></i> 3.4 GB
           </div>
           <a href="https://drive.usercontent.google.com/download?id=1ih05LgrB20zTQFOk7fI4VGKn6auubArm&export=download&authuser=0" target="_blank" onclick="startDownload('Forbidden Siren', 'Fdn_Srn-PAL.pkg')" class="btn-download text-center block w-24">
   <i class="fas fa-download mr-2"></i> PKG
@@ -514,7 +514,7 @@
         <!-- Tamaño y Botón -->
         <div class="mt-auto pt-4 border-t border-gray-800 flex justify-between items-center">
           <div class="text-sm font-mono text-gray-400">
-            <i class="fas fa-hdd mr-1"></i> 3.2 GB
+            <i class="fas fa-hdd mr-1"></i> 4.2 GB
           </div>
           <a href="https://drive.usercontent.google.com/download?id=1OeXH2vaKrKh4pxOvRcB6pYNJf_EhKxvY&export=download&authuser=0" target="_blank" onclick="startDownload('Haunting Ground', 'HG-PAL.pkg')" class="btn-download text-center block w-24">
   <i class="fas fa-download mr-2"></i> PKG
@@ -650,10 +650,8 @@
     
         
     </script>
-</body> 
-    <!-- ==================== MÚSICA DE FONDO Y BOTÓN MUTE ==================== -->
-<!-- Reproductor con reproducción automática -->
-<audio id="bg-music" loop autoplay>
+<!-- ==================== MÚSICA DE FONDO Y BOTÓN MUTE ==================== -->
+<audio id="bg-music" loop preload="auto">
   <source src="audio/fondo.mp3" type="audio/mpeg">
 </audio>
 
@@ -667,49 +665,45 @@
   const musicBtn = document.getElementById('music-toggle');
   const musicIcon = document.getElementById('music-icon');
 
-  // 1. Establecer el volumen al 25% (0.25 de un rango de 0.0 a 1.0)
+  // Ajuste de volumen al 25%
   music.volume = 0.25;
 
-  // Actualizar apariencia visual del botón
+  // Función para actualizar la apariencia del botón
   function updateButtonState() {
     if (!music.paused) {
-      musicIcon.className = 'fas fa-volume-up text-pink-500';
+      musicIcon.className = 'fas fa-volume-up text-cyan-400';
+      musicBtn.classList.remove('border-pink-500', 'text-gray-400');
       musicBtn.classList.add('border-cyan-400', 'shadow-[0_0_15px_#00f3ff]');
     } else {
       musicIcon.className = 'fas fa-volume-mute text-gray-400';
       musicBtn.classList.remove('border-cyan-400', 'shadow-[0_0_15px_#00f3ff]');
+      musicBtn.classList.add('border-pink-500');
     }
   }
 
-  // 2. Intentar reproducir automáticamente de inmediato
-  function startAudio() {
-    music.play().then(() => {
-      updateButtonState();
-    }).catch(() => {
-      // Si el navegador bloquea la reproducción automática sin interacción previa,
-      // se activará silenciosamente al primer clic o toque que dé el usuario.
-      const playOnFirstTouch = () => {
-        music.play().then(() => updateButtonState()).catch(() => {});
-        document.removeEventListener('click', playOnFirstTouch);
-        document.removeEventListener('keydown', playOnFirstTouch);
-      };
-      document.addEventListener('click', playOnFirstTouch);
-      document.addEventListener('keydown', playOnFirstTouch);
-    });
-  }
-
-  // Ejecutar al cargar la página
-  startAudio();
-
-  // 3. Control manual con el botón flotante
+  // Clic directo en el botón de la bocina
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (music.paused) {
-      music.play().then(() => updateButtonState());
+      music.play().then(() => updateButtonState()).catch(() => {});
     } else {
       music.pause();
       updateButtonState();
     }
   });
+
+  // Autoplay inteligente: Inicia al hacer clic en cualquier lugar
+  const enableAudioOnInteraction = () => {
+    if (music.paused) {
+      music.play().then(() => {
+        updateButtonState();
+      }).catch(() => {});
+    }
+    document.removeEventListener('click', enableAudioOnInteraction);
+  };
+
+  document.addEventListener('click', enableAudioOnInteraction);
 </script>
+
+</body>
 </html>
